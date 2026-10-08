@@ -1,0 +1,31 @@
+{
+  "_comment": "DHRUV-MOTUS engineering configuration. These are tunable parameters, NOT scientific constants.",
+  "epsilon": {
+    "fuel": 10.0,
+    "time": 1.0,
+    "iceberg": 0.05,
+    "safety": 0.05
+  },
+  "max_labels_per_state": 10,
+  "max_route_candidates": 20,
+  "max_search_nodes": 50000,
+  "h3_resolution": 3,
+  "heuristic": {
+    "enabled": true,
+    "weight": 1.0
+  },
+  "waiting": {
+    "enabled": true,
+    "max_wait_hours": 24.0,
+    "wait_interval_hours": 6.0
+  },
+  "scenario": {
+    "enabled": false,
+    "sample_count": 50,
+    "seed": null
+  },
+  "data_policy": {
+    "mode": "WARN_AND_CONTINUE",
+    "fail_on_missing_environment": false
+  }
+}

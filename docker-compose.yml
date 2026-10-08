@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=dhruv_user
+      - DB_PASSWORD=dhruv_pass
+      - DB_NAME=dhruv_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - GRPC_WORKER_HOST=python-worker:50051
+    depends_on:
+      - postgres
+      - redis
+      - minio
+      - python-worker
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+  python-worker:
+    build:
+      context: ./python
+    ports:
+      - "50051:50051"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=dhruv_user
+      - DB_PASSWORD=dhruv_pass
+      - DB_NAME=dhruv_db
+      - EARTHDATA_USERNAME=${EARTHDATA_USERNAME}
+      - EARTHDATA_PASSWORD=${EARTHDATA_PASSWORD}
+      - COPERNICUS_USERNAME=05mohitkumar146@gmail.com
+      - COPERNICUS_PASSWORD=Mohit@123456
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgis/postgis:15-3.4
+    environment:
+      - POSTGRES_USER=dhruv_user
+      - POSTGRES_PASSWORD=dhruv_pass
+      - POSTGRES_DB=dhruv_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=dhruv_minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  postgres_data:
+  minio_data:

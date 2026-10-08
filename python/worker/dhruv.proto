@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package dhruv;
+
+service RoutingService {
+  rpc GenerateRoute (RouteRequest) returns (RouteResponse);
+  rpc StressTestRoute (ScenarioRequest) returns (RouteResponse);
+}
+
+message Coordinate {
+  double lat = 1;
+  double lon = 2;
+}
+
+message VesselProfile {
+  string id = 1;
+  double draft = 2;
+  double max_speed = 3;
+  double cruise_speed = 4;
+  double min_speed = 5;
+  string ice_class = 6;
+  double maximum_operational_sic = 7;
+  double max_operational_wind_kts = 8;
+  double max_operational_wave_m = 9;
+}
+
+message RouteRequest {
+  string case_id = 1;
+  Coordinate origin = 2;
+  Coordinate destination = 3;
+  string departure_time = 4;
+  VesselProfile vessel = 5;
+  string policy = 6;         // CONSERVATIVE, BALANCED, EFFICIENT
+  string arrival_window = 7;
+  string algorithm = 8;      // DIJKSTRA, ASTAR, PARETO, DHRUV_MOTUS
+}
+
+message RouteSegment {
+  string segment_id = 1;
+  Coordinate start = 2;
+  Coordinate end = 3;
+  double distance_nm = 4;
+  double time_hours = 5;
+  double speed_knots = 6;
+  double fuel_tons = 7;
+  double sea_ice_exposure = 8;
+  double iceberg_exposure = 9;
+  double safety_uncertainty = 10;
+  string from_cell = 11;
+  string to_cell = 12;
+  string speed_mode = 13;
+  string data_quality = 14;
+}
+
+message RouteMetrics {
+  double total_time_hours = 1;
+  double total_fuel_tons = 2;
+  double total_distance_nm = 3;
+  double sea_ice_exposure = 4;
+  double iceberg_exposure = 5;
+  double safety_uncertainty = 6;
+}
+
+message RouteResult {
+  string route_id = 1;
+  repeated RouteSegment segments = 2;
+  RouteMetrics metrics = 3;
+  string fallback_status = 4;
+  string explanation = 5;
+}
+
+message ExecutionMetrics {
+  double runtime_ms = 1;
+  int32 nodes_expanded = 2;
+  int32 labels_created = 3;
+  int32 labels_pruned = 4;
+  int32 hard_gate_rejections = 5;
+  int32 epsilon_pruned = 6;
+  int32 cap_pruned = 7;
+  int32 pareto_routes_found = 8;
+  string search_terminated_reason = 9;
+}
+
+message RouteResponse {
+  string case_id = 1;
+  string algorithm = 2;
+  string status = 3;
+  RouteResult selected_route = 4;
+  repeated RouteResult pareto_routes = 5;
+  ExecutionMetrics execution_metrics = 6;
+  string data_quality = 7;
+  string warnings = 8;
+  string policy_status = 9;
+  string missing_data_sources = 10;
+}
+
+message ScenarioRequest {
+  string route_id = 1;
+  string scenario_type = 2; 
+}
