@@ -1,41 +1,36 @@
-# DHRUV – Dynamic Hazard Route Optimization Underway Vessel
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Overview
-This repository implements the full DHRUV decision‑support system as specified:
-- **NestJS (TypeScript) backend** with all required modules, PostgreSQL/PostGIS, Redis/BullMQ, and gRPC integration.
-- **Next.js (TypeScript) frontend** using Tailwind, Shadcn UI, and MapLibre GL for the Antarctic map.
-- **Python scientific workers** exposing gRPC services for sea‑ice forecasting, iceberg detection, trajectory prediction, risk fields, and routing.
-- **Docker Compose** wiring all components together (API, frontend, DB, Redis, MinIO, Python worker).
+## Getting Started
 
-## Repository Structure
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
-/                   # repository root
-├─ backend/         # NestJS API
-│   ├─ src/        # source code, modules, controllers, services
-│   ├─ Dockerfile
-│   └─ package.json
-├─ frontend/       # Next.js UI
-│   ├─ src/        # pages, components, styles
-│   ├─ Dockerfile
-│   └─ package.json
-├─ python/          # Python workers
-│   ├─ worker/     # gRPC service implementations
-│   ├─ requirements.txt
-│   └─ Dockerfile
-├─ docker-compose.yml
-└─ README.md       # (this file)
-``` 
 
-## Quick Start (development)
-1. **Prerequisites** – Docker Desktop (or Docker Engine) and Node 18+ installed.
-2. **Clone the repo** and navigate to the root directory.
-3. **Start the stack**:
-   ```bash
-   docker compose up --build
-   ```
-   This will build and run:
-   - `api` (NestJS) on `http://localhost:3000`
-   - `frontend` on `http://localhost:3001`
-   - `postgres` with PostGIS, `redis`, `minio`, and `python-worker`.
-4. **Access the UI** – open `http://localhost:3001` in a browser.
-5. **API documentation** – Swagger UI is available at `http://localhost:3000/api`
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
